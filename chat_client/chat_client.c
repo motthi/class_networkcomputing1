@@ -9,8 +9,6 @@ int main(int argc, char** argv) {
 	struct sockaddr_in server;
 	char deststr[20];
 	char buf[255];
-	char comment[250];
-	char writeComment[255];
 	int tcp_port = 22629;
 	int sock;
 	int s;
@@ -48,13 +46,15 @@ int main(int argc, char** argv) {
 			FD_SET(0, &readfds);
 			FD_SET(sock, &readfds);
 			select(sock + 1, &readfds, NULL, NULL, NULL);
+			char comment[250];
+			char writeComment[255];
 			if(FD_ISSET(0, &readfds)) {
 				fgets(comment, 255, stdin);
 				sprintf(writeComment, "%s", comment);
 				write(sock, writeComment, strlen(writeComment));
 				if(strcmp(comment, ":q") == 0) {
 					printf("Closed\n");
-					break;
+					return 0;
 				}
 			} else if(FD_ISSET(sock, &readfds)) {
 				numrcv = recv(sock, buf, 255, 0);
