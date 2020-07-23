@@ -9,6 +9,7 @@ int main(int argc, char** argv) {
 	int tcp_port = 22629;
 	int sock;
 	int s;
+	int numrcv;
 	ssize_t n;
 	char buf[255];
 	struct sockaddr_in server;
@@ -41,15 +42,17 @@ int main(int argc, char** argv) {
 		while(1) {
 			char comment[250];
 			char writeComment[255];
+			char buf[255];
 			printf("a : ");
 			scanf("%s", comment);
 			sprintf(writeComment, "%s\r\n", comment);
 			write(sock, writeComment, strlen(writeComment));
 			if(strcmp(comment, ":q") == 0) {
 				printf("closed\n");
-				//close(sock);
 				break;
 			}
+			numrcv = recv(sock, buf, 255, 0);
+			printf("%s\n", buf);
 		}
 	}
 
