@@ -41,7 +41,7 @@ int main(int argc, char** argv) {
 
 		memset(buf, 0, sizeof(buf));
 		n = read(sock, buf, sizeof(buf));
-		printf("%s\n", buf);
+		printf("%s", buf);
 
 		FD_ZERO(&readfds);
 		while(1) {
@@ -58,7 +58,7 @@ int main(int argc, char** argv) {
 				}
 			} else if(FD_ISSET(sock, &readfds)) {
 				numrcv = recv(sock, buf, 255, 0);
-				printf("%s\n", buf);
+				printf("%s", buf);
 			}
 		}
 	}
