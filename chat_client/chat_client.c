@@ -57,7 +57,6 @@ int main(int argc, char** argv) {
 					break;
 				}
 			} else if(FD_ISSET(sock, &readfds)) {
-				printf("socket\n");
 				numrcv = recv(sock, buf, 255, 0);
 				printf("%s\n", buf);
 			}
