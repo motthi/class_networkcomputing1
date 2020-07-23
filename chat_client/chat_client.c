@@ -49,8 +49,8 @@ int main(int argc, char** argv) {
 			FD_SET(sock, &readfds);
 			select(sock + 1, &readfds, NULL, NULL, NULL);
 			if(FD_ISSET(0, &readfds)) {
-				scanf("%s", comment);
-				sprintf(writeComment, "%s\r\n", comment);
+				fgets(comment, 255, stdin);
+				sprintf(writeComment, "%s", comment);
 				write(sock, writeComment, strlen(writeComment));
 				if(strcmp(comment, ":q") == 0) {
 					printf("Closed\n");
