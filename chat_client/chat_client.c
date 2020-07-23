@@ -6,7 +6,7 @@
 
 int main(int argc, char** argv) {
 	char deststr[20];
-	int tcp_port = 13;
+	int tcp_port = 22629;
 	int sock;
 	int s;
 	ssize_t n;
@@ -22,31 +22,11 @@ int main(int argc, char** argv) {
 
 	sock			  = socket(AF_INET, SOCK_STREAM, 0);
 	server.sin_family = AF_INET;
-	server.sin_port	  = htons(tcp_port);
+	server.sin_port	  = htons(22629);
 	s				  = inet_pton(AF_INET, deststr, &server.sin_addr);
 	if(s != 1) {
-		/* Not IPv4 */
-		struct sockaddr_in6 server_in6;
-		sock				   = socket(AF_INET6, SOCK_STREAM, 0);
-		server_in6.sin6_family = AF_INET6;
-		server_in6.sin6_port   = htons(tcp_port);
-		s					   = inet_pton(AF_INET6, deststr, &server_in6.sin6_addr);
-		if(s != 1) {
-			/* Neither IPv4 or IPv6 */
-			printf("\nError : Invalid Address\n\n");
-			return 1;
-		}
-
-		/* IPv6 */
-		if(connect(sock, (struct sockaddr*)&server_in6, sizeof(server_in6))) {
-			printf("\nError : Failed to Connect\n\n");
-			return 1;
-		}
-
-		memset(buf, 0, sizeof(buf));
-		n = read(sock, buf, sizeof(buf));
-		printf("%s\n", buf);
-
+		printf("\nError : Failed to Connect\n\n");
+		return 1;
 	} else {
 		/* IPv4 */
 		if(connect(sock, (struct sockaddr*)&server, sizeof(server)) == -1) {
@@ -57,6 +37,20 @@ int main(int argc, char** argv) {
 		memset(buf, 0, sizeof(buf));
 		n = read(sock, buf, sizeof(buf));
 		printf("%s\n", buf);
+
+		while(1) {
+			char comment[250];
+			char writeComment[255];
+			printf("a : ");
+			scanf("%s", comment);
+			sprintf(writeComment, "%s\r\n", comment);
+			write(sock, writeComment, strlen(writeComment));
+			if(strcmp(comment, ":q") == 0) {
+				printf("closed\n");
+				//close(sock);
+				break;
+			}
+		}
 	}
 
 	return 0;
