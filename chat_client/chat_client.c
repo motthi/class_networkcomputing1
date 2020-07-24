@@ -11,6 +11,7 @@ int main(int argc, char** argv) {
 	char buf[255];
 	char comment[250];
 	char writeComment[255];
+	char userName[255];
 	int tcp_port = 22629;
 	int sock;
 	int s;
@@ -22,6 +23,9 @@ int main(int argc, char** argv) {
 		printf("\nError : Input address\n\n");
 		return 1;
 	}
+
+	printf("Input your name ---> ");
+	scanf("%s", &userName);
 
 	strcpy(deststr, argv[1]);
 
@@ -42,6 +46,8 @@ int main(int argc, char** argv) {
 		memset(buf, 0, sizeof(buf));
 		n = read(sock, buf, sizeof(buf));
 		printf("%s", buf);
+		sprintf(writeComment, ":u %s", userName);
+		write(sock, writeComment, strlen(writeComment));
 
 		FD_ZERO(&readfds);
 		while(1) {
@@ -53,7 +59,7 @@ int main(int argc, char** argv) {
 				sprintf(writeComment, "%s", comment);
 				write(sock, writeComment, strlen(writeComment));
 				if(strncmp(comment, ":q", 2) == 0) {
-					printf("Closed\n");
+					printf("Closed\nGood Bye!\n\n");
 					close(sock);
 					break;
 				}
