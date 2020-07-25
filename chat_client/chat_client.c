@@ -19,15 +19,16 @@ int main(int argc, char** argv) {
 	ssize_t n;
 	fd_set readfds;
 
+	/* コマンドライン引数から接続先のIPv4アドレスを使用 */
 	if(argc == 1) {
 		printf("\nError : Input address\n\n");
 		return 1;
 	}
+	strcpy(deststr, argv[1]);
 
+	/* ユーザー名の入力 */
 	printf("Input your name ---> ");
 	scanf("%s", &userName);
-
-	strcpy(deststr, argv[1]);
 
 	sock			  = socket(AF_INET, SOCK_STREAM, 0);
 	server.sin_family = AF_INET;
@@ -37,7 +38,6 @@ int main(int argc, char** argv) {
 		printf("\nError : Failed to Connect\n\n");
 		return 1;
 	} else {
-		/* IPv4 */
 		if(connect(sock, (struct sockaddr*)&server, sizeof(server)) == -1) {
 			printf("\nError : Failed to Connect\n\n");
 			return 1;
@@ -45,7 +45,18 @@ int main(int argc, char** argv) {
 
 		memset(buf, 0, sizeof(buf));
 		n = read(sock, buf, sizeof(buf));
-		printf("%s", buf);
+		char welcomeMessage[255];
+		sprintf(welcomeMessage, "%s%s\t:", buf, userName);
+		memset(buf, 0, sizeof(buf));
+		for(int num = 0; num <= sizeof(welcomeMessage); num++) {
+			fflush(stdout);
+			printf("%c", welcomeMessage[num]);
+			if(welcomeMessage[num] == ':') {
+				fflush(stdout);
+				break;
+			}
+		}
+		//printf("%s", welcomeMessage);
 		sprintf(writeComment, ":u %s", userName);
 		write(sock, writeComment, strlen(writeComment));
 		memset(writeComment, "\0", sizeof(writeComment));
@@ -60,14 +71,21 @@ int main(int argc, char** argv) {
 				sprintf(writeComment, "%s", comment);
 				write(sock, writeComment, strlen(writeComment));
 				if(strncmp(comment, ":q", 2) == 0) {
-					printf("Closed\nGood Bye!\n\n");
+					printf("\nClosed\nGood Bye!\n\n");
 					close(sock);
 					break;
 				}
 			} else if(FD_ISSET(sock, &readfds)) {
 				numrcv = recv(sock, buf, 255, 0);
+				fflush(stdout);
+				for(int num = 0; num <= sizeof(userName); num++) {
+					printf("\b");
+				}
 				printf("%s", buf);
+				memset(buf, 0, sizeof(buf));
 			}
+			fflush(stdout);
+			printf("%s\t: ", userName);
 		}
 	}
 
