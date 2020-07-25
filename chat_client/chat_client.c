@@ -78,6 +78,7 @@ int main(int argc, char** argv) {
 				fflush(stdout);
 			}
 			printf("%s\t: ", userName);
+			fflush(stdout);
 		}
 	}
 
