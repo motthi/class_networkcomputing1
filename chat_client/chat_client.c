@@ -48,6 +48,7 @@ int main(int argc, char** argv) {
 		printf("%s", buf);
 		sprintf(writeComment, ":u %s", userName);
 		write(sock, writeComment, strlen(writeComment));
+		memset(writeComment, "\0", sizeof(writeComment));
 
 		FD_ZERO(&readfds);
 		while(1) {
