@@ -47,6 +47,8 @@ int main(int argc, char** argv) {
 		memset(buf, 0, sizeof(buf));
 		n = read(sock, buf, sizeof(buf));
 		printf("%s", buf);
+		printf("%s\t: ", userName);
+		fflush(stdout);
 		sprintf(writeComment, ":u %s", userName);
 		write(sock, writeComment, strlen(writeComment));
 		memset(writeComment, "\0", sizeof(writeComment));
