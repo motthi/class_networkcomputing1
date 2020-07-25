@@ -51,7 +51,7 @@ int main(int argc, char** argv) {
 		fflush(stdout);
 		sprintf(writeComment, ":u %s", userName);
 		write(sock, writeComment, strlen(writeComment));
-		memset(writeComment, "\0", sizeof(writeComment));
+		memset(writeComment, '\0', sizeof(writeComment));
 
 		FD_ZERO(&readfds);
 		while(1) {
@@ -72,6 +72,7 @@ int main(int argc, char** argv) {
 					fflush(stdout);
 				}
 				fflush(stdout);
+				memset(writeComment, '\0', sizeof(writeComment));
 			} else if(FD_ISSET(sock, &readfds)) {
 				numrcv = recv(sock, buf, 255, 0);
 				printf("\r             \r");
@@ -80,6 +81,7 @@ int main(int argc, char** argv) {
 				fflush(stdout);
 				printf("%s\t: ", userName);
 				fflush(stdout);
+				memset(buf, '\0', sizeof(buf));
 			}
 		}
 	}
