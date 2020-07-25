@@ -75,7 +75,6 @@ int main(int argc, char** argv) {
 			} else if(FD_ISSET(sock, &readfds)) {
 				numrcv = recv(sock, buf, 255, 0);
 				printf("\r             \r");
-				printf("%s", buf);
 				fflush(stdout);
 				printf("%s\t: ", userName);
 				fflush(stdout);
