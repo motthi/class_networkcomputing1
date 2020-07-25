@@ -63,14 +63,21 @@ int main(int argc, char** argv) {
 				sprintf(writeComment, "%s", comment);
 				write(sock, writeComment, strlen(writeComment));
 				if(strncmp(comment, ":q", 2) == 0) {
-					printf("Closed\nGood Bye!\n\n");
+					printf("\n\nClosed\nGood Bye!\n\n");
 					close(sock);
 					break;
 				}
+				if((int)comment[0] != 0x0A) {
+					printf("%s", comment);
+				}
+				fflush(stdout);
 			} else if(FD_ISSET(sock, &readfds)) {
 				numrcv = recv(sock, buf, 255, 0);
+				printf("\r             \r");
 				printf("%s", buf);
+				fflush(stdout);
 			}
+			printf("%s\t: ", userName);
 		}
 	}
 
