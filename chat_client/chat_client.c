@@ -76,6 +76,8 @@ int main(int argc, char** argv) {
 				numrcv = recv(sock, buf, 255, 0);
 				printf("\r             \r");
 				fflush(stdout);
+				printf("%s", buf);
+				fflush(stdout);
 				printf("%s\t: ", userName);
 				fflush(stdout);
 			}
