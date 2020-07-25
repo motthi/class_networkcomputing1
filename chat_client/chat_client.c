@@ -68,7 +68,8 @@ int main(int argc, char** argv) {
 					break;
 				}
 				if((int)comment[0] != 0x0A) {
-					printf("%s", comment);
+					printf("%s\t: ", userName);
+					fflush(stdout);
 				}
 				fflush(stdout);
 			} else if(FD_ISSET(sock, &readfds)) {
@@ -76,9 +77,9 @@ int main(int argc, char** argv) {
 				printf("\r             \r");
 				printf("%s", buf);
 				fflush(stdout);
+				printf("%s\t: ", userName);
+				fflush(stdout);
 			}
-			printf("%s\t: ", userName);
-			fflush(stdout);
 		}
 	}
 
